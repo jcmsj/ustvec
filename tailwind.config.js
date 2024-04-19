@@ -2,13 +2,15 @@
 module.exports = {
     daisyui: {
       themes: [
-        "light",
         "night",
+        "light",
       ],
     },
     content: [
         "./index.html",
         "./src/**/*.{js,ts,vue}",
+        "./formkit.theme.ts",
+        "./formkit.config.ts",
     ],
     plugins: [
       require("daisyui"),

@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
-import "./tailwind.css"
+import { plugin, defaultConfig } from '@formkit/vue'
 import App from './App.vue'
-
-createApp(App).mount('#app')
+import formKitConfig from '../formkit.config'
+import "./tailwind.css"
+const app = createApp(App)
+app.use(plugin, defaultConfig(formKitConfig))
+app.mount('#app')
