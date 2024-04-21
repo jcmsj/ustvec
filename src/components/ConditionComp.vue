@@ -12,6 +12,14 @@
     validation="required"
     >
     </FormKit>
+    <!-- number -->
+    <FormKit v-else-if="condition.type == 'number'" :type="condition.type"  :label="condition.description" :name="condition.id" 
+    v-model="value"
+    />
+    <!-- text -->
+    <FormKit v-else-if="condition.type == 'text'" :type="condition.type"  :label="condition.description" :name="condition.id" 
+    v-model="value"
+    />
     <ConditionComp v-for="c in reason?.children" :condition="c" v-if="reason?.children.length" 
     @change="(cond,v) => emit('change', cond,v)"
     />
@@ -20,6 +28,7 @@
 <script setup lang="ts" generic="Input , ID extends string, EvalReturn">
 import { computed, ref, watch } from 'vue';
 import { type Condition } from "../utils/logic.ts"
+
 const {condition} = defineProps<{condition:Condition<Input, ID, EvalReturn, Condition<Input, ID, EvalReturn, any>>}>()
 const wrap = computed(() => condition.children.map(t => t.description))
 const value = ref<string>()

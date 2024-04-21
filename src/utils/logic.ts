@@ -1,6 +1,4 @@
-import { ref } from "vue";
-
-export type ConditionType = "select" | "text" | "number" | "date" | "none"
+export type ConditionType = "select" | "text" | "number" | "date" | "none" | "list"
 interface ICondition<Input, ID, EvalReturn, Child> {
     children: Child[]
     evaluate: (input: Input) => EvalReturn;
@@ -36,7 +34,7 @@ function condition<Input, ID, EvalReturn, Child>(...args: ConstructorParameters<
 
 const ACCEPT = (a?: any) => true
 const REJECT = (a?: any) => false
-type VisaType = 'B-1'|'B-2'| 'Other'
+type VisaType = 'B-1' | 'B-2' | 'Other'
 
 export const TravelRejection = [
     // Purpose of visit:
@@ -101,7 +99,7 @@ export const TravelRejection = [
     ]),
     condition('Passport', 'select', 'Do you have a passport', ACCEPT, [
         condition('no', 'none', 'no', REJECT),
-        condition('yes', 'select', 'yes', ACCEPT, [
+        condition('yes', 'none', 'yes', ACCEPT, [
             // passport validity of 6months
             condition('PassportExpiry', 'date', "Enter passport expiry",
                 (n?: string) => {
@@ -118,3 +116,43 @@ export const TravelRejection = [
         ]),
     ])
 ]
+
+const ZERO = (n: any) => 0
+const INCREASE = (n: any) => 1
+const DECREASE = (n: any) => -1
+
+export const ProvingTies = [
+    condition('AnnualSalaryDollars', 'number', 'Annual Salary', (salaryInDollars:string) => {
+        console.log({salaryInDollars})
+        return parseInt(salaryInDollars) > 20000 ? 1: -1
+    }),
+    // are you married
+    condition('marriage', 'select', 'Are you married?', ZERO, [
+        condition('no', 'none', 'no', DECREASE),
+        condition('yes', 'none', 'yes', ZERO,
+            [
+                // how many children
+                condition('children', 'number', 'How many children', (children:string) => {
+                    console.log({children})
+                    return parseInt(children) > 0 ? 1: -1
+                }),
+            ]
+        ),
+    ]),
+    // School Enrollment
+    condition('SchoolEnrollment', 'select', 'Are you enrolled in school?', ZERO, [
+        condition('no', 'none', 'no', ZERO),
+        condition('yes', 'none', 'yes', INCREASE),
+    ]),
+    // Volunteer Work
+    // condition('VolunteerWork', 'text', 'List your volunteer work', INCREASE),
+    // Organization Membership
+    // condition('OrganizationMembership', 'text', 'List your organization memberships', INCREASE),
+    // // Personal Assets
+    // condition('Asset', 'list', 'List your personal assets', INCREASE, [
+    //     condition('name', 'text', 'Name of Asset', INCREASE),
+    //     condition('valueDollars', 'number', 'Value of Asset', INCREASE),
+    //     condition('type', 'select', 'Type of Asset', INCREASE),
+    // ]),
+]
+

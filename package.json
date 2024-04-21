@@ -15,6 +15,7 @@
     "@formkit/themes": "latest",
     "@formkit/vue": "latest",
     "daisyui": "^4.10.2",
+    "dayjs": "^1.11.10",
     "vue": "^3.4.23"
   },
   "devDependencies": {

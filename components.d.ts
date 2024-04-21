@@ -7,10 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    CondComp: typeof import('./src/components/CondComp.vue')['default']
     ConditionComp: typeof import('./src/components/ConditionComp.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    MdiCode: typeof import('~icons/mdi/code')['default']
-    RecursiveSelect: typeof import('./src/components/RecursiveSelect.vue')['default']
+    OrganizationMembershipList: typeof import('./src/components/OrganizationMembershipList.vue')['default']
+    PersonalAssetInput: typeof import('./src/components/PersonalAssetInput.vue')['default']
+    PersonalAssetInputList: typeof import('./src/components/PersonalAssetInputList.vue')['default']
+    ProvingTies: typeof import('./src/components/ProvingTies.vue')['default']
+    RecursiveSchemaComp: typeof import('./src/components/RecursiveSchemaComp.vue')['default']
   }
 }

@@ -1,0 +1,4 @@
+.group {
+    @apply border-secondary border-2 p-2;
+    border-radius: 0.5rem;
+}

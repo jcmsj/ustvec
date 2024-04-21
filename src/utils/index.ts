@@ -2,7 +2,7 @@
 interface GeneralData {
     reasonForTravel: 'tourism' | 'business' | 'medical' | 'study' | 'other'
     // name is redundant to the validation
-    firstName: string 
+    firstName: string
     lastName: string
     middleName: string
     birthDate: Date
@@ -20,27 +20,36 @@ interface TravelItinerary {
     endDate: Date
 }
 
-interface Asset {
-    name: string;
-    valueDollars: number;
-    type: 'property' | 'vehicle' | 'savings' | 'jewelry' | 'collectibles' | 'life insurance' | 'other'
-}
-interface ProveTies {
-    career: {
-        annualSalaryDollars: number
-    }
-    family: {
-        spouse: boolean
-        children: number
-    }
-    personalAssets: Asset[]
-    schoolEnrollment: boolean
-    VolunteerWork: string[]
-    OrganizationMembership: {
-        name: string
-        memberSince: Date
-        membershipExpiry: Date
-    }[]
-}
+export const assetTypes = ['property', 'vehicle', 'savings', 'jewelry', 'collectibles', 'life insurance', 'other']
+export const assetTypeSchema = [
+    {
+        label: 'Select Asset Type',
+        value: '',
+        selected:true,
+        attrs: {
+            disabled:true,
+        }
+    },
+    {
+        'label': 'Property',
+    },
+    {
+        'label': 'Vehicle',
+    },
+    {
+        'label': 'Savings',
+    },
+    {
+        'label': 'Jewelry',
+    },
+    {
+        'label': 'Collectibles',
+    },
+    {
+        'label': 'Life Insurance',
+    },
+    {
+        'label': 'Other',
+    },
+]
 
-// Use Travel Rejection Reason to encode the ProvieTies
