@@ -20,36 +20,3 @@ interface TravelItinerary {
     endDate: Date
 }
 
-export const assetTypes = ['property', 'vehicle', 'savings', 'jewelry', 'collectibles', 'life insurance', 'other']
-export const assetTypeSchema = [
-    {
-        label: 'Select Asset Type',
-        value: '',
-        selected:true,
-        attrs: {
-            disabled:true,
-        }
-    },
-    {
-        'label': 'Property',
-    },
-    {
-        'label': 'Vehicle',
-    },
-    {
-        'label': 'Savings',
-    },
-    {
-        'label': 'Jewelry',
-    },
-    {
-        'label': 'Collectibles',
-    },
-    {
-        'label': 'Life Insurance',
-    },
-    {
-        'label': 'Other',
-    },
-]
-
