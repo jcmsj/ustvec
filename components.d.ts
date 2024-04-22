@@ -8,10 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ConditionComp: typeof import('./src/components/ConditionComp.vue')['default']
+    EvaluateGeneral: typeof import('./src/components/EvaluateGeneral.vue')['default']
+    Evaluation: typeof import('./src/components/Evaluation.vue')['default']
     OrganizationMembershipList: typeof import('./src/components/OrganizationMembershipList.vue')['default']
     PersonalAssetInput: typeof import('./src/components/PersonalAssetInput.vue')['default']
     PersonalAssetInputList: typeof import('./src/components/PersonalAssetInputList.vue')['default']
     ProvingTies: typeof import('./src/components/ProvingTies.vue')['default']
     RecursiveSchemaComp: typeof import('./src/components/RecursiveSchemaComp.vue')['default']
+    WhenGeneralEligible: typeof import('./src/components/WhenGeneralEligible.vue')['default']
   }
 }

@@ -1,7 +1,7 @@
 <template>
     <FormKit type="list" name="assets" :value="assets" dynamic #default="{ items, node, value }">
         <FormKit type="group" v-for="(item, index) in items" :key="item" :index="index" >
-            <div class="group">
+            <div class="group w-max">
                 <FormKit type="text" name="name" label="Asset name" validation="required" />
                 <FormKit type="select" name="type" :options="assetTypeSchema" label="Asset Type" validation="required">
                 </FormKit>
@@ -11,16 +11,15 @@
                 </button>
             </div>
         </FormKit>
-        <button type="button" class="btn justify-self-center" @click="() => node.input(value.concat({}))">
+        <button type="button" class="btn btn-secondary justify-self-center" @click="() => node.input(value.concat({}))">
             + Add asset
         </button>
-        <pre wrap>{{ value }}</pre>
     </FormKit>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
 import { Asset } from "../inference";
-import { assetTypeSchema,assetTypes } from "../knowledgebase/ties";
+import { assetTypeSchema } from "../knowledgebase/ties";
 const assets = ref<Partial<Asset>[]>([{}])
 </script>
 <style scoped>

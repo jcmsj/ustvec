@@ -1,7 +1,8 @@
+import { Asset } from "../inference"
 import { useEvaluate, useData } from "../utils/schema"
 
-export const assetTypes = ['property', 'vehicle', 'savings', 'jewelry', 'collectibles', 'life insurance', 'other']
-export const assetTypeSchema = [
+type Assets = {label:string, value:Asset['type'] | ''} & Record<string, any>
+export const assetTypeSchema:Assets[] = [
     {
         label: 'Select Asset Type',
         value: '',
@@ -11,26 +12,45 @@ export const assetTypeSchema = [
         }
     },
     {
-        'label': 'Property',
+        label: 'Property',
+        value: 'property'
     },
     {
-        'label': 'Vehicle',
+        label: 'Real Estate',
+        value: 'real estate'
     },
     {
-        'label': 'Savings',
+        label: 'Cars',
+        value: 'cars'
     },
     {
-        'label': 'Jewelry',
+        label: 'Motorbicycles',
+        value: 'motorbicycles'
     },
     {
-        'label': 'Collectibles',
+        label: 'Savings',
+        value: 'savings'
     },
     {
-        'label': 'Life Insurance',
+        label: 'Business',
+        value: 'business'
     },
     {
-        'label': 'Other',
+        label: 'Jewelry',
+        value: 'jewelry'
     },
+    {
+        label: 'Collectibles',
+        value: 'collectibles'
+    },
+    {
+        label: 'Life Insurance',
+        value: 'life insurance'
+    },
+    {
+        label: 'Other',
+        value: 'other'
+    }
 ]
 
 const evaluations = useEvaluate()
@@ -41,8 +61,8 @@ export const strongTies = useData({
     nested: [
         {
             $formkit: 'number',
-            id: 'AnnualSalaryDollars',
-            name: 'AnnualSalaryDollars',
+            id: 'annualSalaryDollars',
+            name: 'annualSalaryDollars',
             label: 'Annual Salary($)',
             validation: 'required',
             validationVisibility: 'live',
@@ -63,11 +83,22 @@ export const strongTies = useData({
                 {
                     when: 'yes',
                     $formkit: 'number',
-                    id: 'Children',
-                    name: 'Children',
+                    id: 'children',
+                    name: 'children',
                     label: 'How many children',
                 }
             ]
+        },
+        // are you enrolled in school
+        {
+            $formkit: 'select',
+            id: 'schoolEnrollment',
+            name: 'schoolEnrollment',
+            label: 'Are you enrolled in school?',
+            options: [
+                { label: 'No', value: 'no' },
+                { label: 'Yes', value: 'yes' },
+            ],
         },
     ]
 })

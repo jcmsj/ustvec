@@ -1,7 +1,19 @@
-import { KnowledgeTree, useData, useEvaluate } from "../utils/schema"
+import { useData, useEvaluate } from "../utils/schema"
 
+export interface General {
+    travelPurpose: 'ConductBusiness' | 'AttendConvention' | 'SettleEState' | 'Contract' | 'Tourism' | 'Vacation' | 'Visit' | 'MedicalTreatment' | 'JoinSocialevent' | 'Participate' | 'ShortStudy' | 'Study' | 'Employment' | 'ProfessionalPerformance' | 'ArrivalCrewmember'
+    conventionType?: 'Scientific' | 'Educational' | 'Professional' | 'Business'
+    socialEventType?: 'Fraternal' | 'Social'
+    crewmemberType?: 'ship' | 'aircraft'
+    passport: 'no' | 'yes'
+    plannedEndDate?: Date
+    visaAttempts : {
+        failed: number
+        success: number
+    }
+}
 export const acceptsEvaluations = useEvaluate()
-const accepts: KnowledgeTree = {
+export const general = useData({
     id: 'general',
     $formkit: 'group',
     name: 'general',
@@ -128,15 +140,13 @@ const accepts: KnowledgeTree = {
                 { label: 'Yes', value: 'yes' },
             ],
             nested: [
-                // planned end date
                 {
                     when: 'yes',
                     $formkit: 'date',
                     id: 'plannedEndDate',
                     label: 'What date will your trip end?',
-                    validation: `date_after:${new Date()}`,
+                    validation: `required|date_after:${new Date()}`,
                     validationVisibility: 'live',
-                    // passport expiration
                 },
                 {
                     when: 'yes',
@@ -144,12 +154,36 @@ const accepts: KnowledgeTree = {
                     id: 'passportExpiration',
                     validationVisibility: 'live',
                     label: 'Passport expiration date',
-                    validation:"afterInputDate:plannedEndDate,6",
+                    validation:"required|afterInputDate:plannedEndDate,6",
                 }
 
             ]
-        }
+        },
+        {
+        $formkit: 'group',
+        id:"visaAttempts",
+            children: [
+                {
+                    // input number for failed visa attempts
+                    $formkit: 'number',
+                    id: 'failed',
+                    name: 'failed',
+                    label: 'How many times have you failed to get a VISA?',
+                    min:0,
+                    value:0,
+                },
+                // successful visa attempts
+                {
+                    // input number for successful visa attempts
+                    $formkit: 'number',
+                    id: 'success',
+                    name: 'success',
+                    label: 'How many times have you successfully gotten a VISA?',
+                    min:0,
+                    value:0,
+                },
+            ]
+        },
+      
     ]
-}
-
-export const general = useData(accepts)
+})
