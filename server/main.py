@@ -44,5 +44,5 @@ if __name__ == "__main__":
     parser.add_argument('--host', default='', help='Host address')
     parser.add_argument('--port', type=int, default=8000, help='Port number')
     args = parser.parse_args()
-
+    print(f"Starting server on http://{'localhost' if args.host == '' else args.host}:{args.port}")
     run(host=args.host, port=args.port)
