@@ -11,12 +11,11 @@
           home</li>
         <li class="step" :class="{ 'step-primary': state === 'travel' }" @click="state = 'travel'">Travel Itinerary</li>
       </ul>
-      <FormKit type="form" v-if="state == 'general'" @submit="onSubmit">
+      <FormKit type="form" v-if="state == 'general'" @submit="onSubmit" :actions="false">
         <FormKitSchema v-bind="general" />
       </FormKit>
-      <FormKit type="form" @submit="onSubmit" v-if="state == 'ties'" #default="{ value }">
+      <FormKit type="form" @submit="onSubmit" v-if="state == 'ties'" #default="{ value }" :actions="false">
         <div class="text-3xl divider divider-primary">Proving Ties</div>
-        <Evaluation :value />
         <FormKitSchema v-bind="strongTies">
         </FormKitSchema>
         <div class="text-xl divider">Personal Assets</div>
@@ -27,25 +26,31 @@
         <div class="flex flex-col gap-y-2 items-center">
           <OrganizationMembershipList />
         </div>
-        <details>
-          <pre>{{ value }}</pre>
-        </details>
+        <TiesEvaluation :value />
       </FormKit>
-      <form @submit.prevent="onSubmitTravel({plan})" v-if="state == 'travel'" class="form-control" >
-          <textarea v-model="plan" name="plan" id="plan" cols="30" rows="10" class="resize textarea textarea-ghost" required></textarea>
-          <button type="submit" class="btn">Submit</button>
-      </form>
+      <TravelForm v-if="state=='travel'" />
+      <div class="join">
+          <button @click="prev" class="join-item btn" :class="{'btn-disabled':!canPrev}">
+            Previous
+          </button>
+          <button @click="next" class="join-item btn" :class="{'btn-disabled':!canNext}">
+            Next
+          </button>
+        </div>
     </main>
   </div>
 </template>
 <script setup lang="ts">
 import { FormKit } from '@formkit/vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { general } from './knowledgebase/general';
 import PersonalAssetInputList from './components/PersonalAssetInputList.vue';
 import OrganizationMembershipList from './components/OrganizationMembershipList.vue';
 import { strongTies } from './knowledgebase/ties';
-import Evaluation from "./components/Evaluation.vue";
+import TiesEvaluation from "./components/TiesEvaluation.vue";
+import TravelPlanList from './components/TravelPlanList.vue';
+import TravelForm from './components/TravelForm.vue';
+
 function onSubmit(data) {
   state.value = 'ties'
 }
@@ -54,21 +59,43 @@ const state = ref<"general" | "ties" | "travel">("general")
 function push(key: string, v: any) {
   console.log(key, v)
 }
-const plan = ref('')
-async function onSubmitTravel(data:{plan:string}) {
-  // `
-  //     New york, california + central park, statue of liberty, empire state building, golden gate bridge
-  //   + explore, chill, relax, buy, shop, shopping, acquire, get, eat, dine, lunch, dinner, sight seeing fvdfbsgrbetyh swimming
-  //     `
-  const response = await fetch('http://localhost:8000', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      'plan': data.plan
-    })
-  })
-  console.log(await response.text())
+function onSubmitTravel(data) {
+  state.value = 'ties'
 }
+
+
+function next() {
+  if (state.value === 'general') {
+    state.value = 'ties'
+  } else if (state.value === 'ties') {
+    state.value = 'travel'
+  }
+}
+
+function prev() {
+  if (state.value === 'ties') {
+    state.value = 'general'
+  } else if (state.value === 'travel') {
+    state.value = 'ties'
+  }
+}
+const canNext = computed(() => {
+  if (state.value === 'general') {
+    return true
+  } else if (state.value === 'ties') {
+    return true
+  } else {
+    return false
+  }
+})
+
+const canPrev = computed(() => {
+  if (state.value === 'general') {
+    return false
+  } else if (state.value === 'ties') {
+    return true
+  } else {
+    return true
+  }
+})
 </script>

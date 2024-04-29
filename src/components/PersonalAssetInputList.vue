@@ -1,7 +1,7 @@
 <template>
     <FormKit type="list" name="assets" :value="assets" dynamic #default="{ items, node, value }">
         <FormKit type="group" v-for="(item, index) in items" :key="item" :index="index" >
-            <div class="group w-max">
+            <div class="group group-format">
                 <FormKit type="text" name="name" label="Asset name" validation="required" />
                 <FormKit type="select" name="type" :options="assetTypeSchema" label="Asset Type" validation="required">
                 </FormKit>

@@ -13,8 +13,13 @@ declare module 'vue' {
     OrganizationMembershipList: typeof import('./src/components/OrganizationMembershipList.vue')['default']
     PersonalAssetInput: typeof import('./src/components/PersonalAssetInput.vue')['default']
     PersonalAssetInputList: typeof import('./src/components/PersonalAssetInputList.vue')['default']
+    PlanEvaluation: typeof import('./src/components/PlanEvaluation.vue')['default']
     ProvingTies: typeof import('./src/components/ProvingTies.vue')['default']
     RecursiveSchemaComp: typeof import('./src/components/RecursiveSchemaComp.vue')['default']
+    TiesEvaluation: typeof import('./src/components/TiesEvaluation.vue')['default']
+    Travel: typeof import('./src/components/Travel.vue')['default']
+    TravelForm: typeof import('./src/components/TravelForm.vue')['default']
+    TravelPlanList: typeof import('./src/components/TravelPlanList.vue')['default']
     WhenGeneralEligible: typeof import('./src/components/WhenGeneralEligible.vue')['default']
   }
 }
