@@ -158,31 +158,31 @@ export const general = useData({
 
             ]
         },
-        {
-        $formkit: 'group',
-        id:"visaAttempts",
-            children: [
-                {
-                    // input number for failed visa attempts
-                    $formkit: 'number',
-                    id: 'failed',
-                    name: 'failed',
-                    label: 'How many times have you failed to get a VISA?',
-                    min:0,
-                    value:0,
-                },
-                // successful visa attempts
-                {
-                    // input number for successful visa attempts
-                    $formkit: 'number',
-                    id: 'success',
-                    name: 'success',
-                    label: 'How many times have you successfully gotten a VISA?',
-                    min:0,
-                    value:0,
-                },
-            ]
-        },
+        // {
+        // $formkit: 'group',
+        // id:"visaAttempts",
+        //     children: [
+        //         {
+        //             // input number for failed visa attempts
+        //             $formkit: 'number',
+        //             id: 'failed',
+        //             name: 'failed',
+        //             label: 'How many times have you failed to get a VISA?',
+        //             min:0,
+        //             value:0,
+        //         },
+        //         // successful visa attempts
+        //         {
+        //             // input number for successful visa attempts
+        //             $formkit: 'number',
+        //             id: 'success',
+        //             name: 'success',
+        //             label: 'How many times have you successfully gotten a VISA?',
+        //             min:0,
+        //             value:0,
+        //         },
+        //     ]
+        // },
       
     ]
 })
