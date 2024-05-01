@@ -1,5 +1,5 @@
 {
-  "name": "div-starter",
+  "name": "ustvec",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@iconify-json/ic": "^1.1.17",
-    "@iconify-json/material-symbols": "^1.1.66",
     "@rollup/plugin-dsv": "^3.0.4",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",

@@ -1,6 +1,6 @@
 import { ref } from "vue";
 //@ts-ignore
-import csv from "./cases.csv";
+import csv from "../../public/cases.csv";
 export const raw = csv;
 interface Entry {
     country: "usa",
