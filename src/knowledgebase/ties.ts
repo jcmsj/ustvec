@@ -1,5 +1,5 @@
 import { Asset } from "../inference"
-import { useEvaluate, useData } from "../utils/schema"
+import { useData } from "../utils/schema"
 
 type Assets = {label:string, value:Asset['type'] | ''} & Record<string, any>
 export const assetTypeSchema:Assets[] = [
@@ -53,7 +53,6 @@ export const assetTypeSchema:Assets[] = [
     }
 ]
 
-const evaluations = useEvaluate()
 export const strongTies = useData({
     id: 'ties',
     $formkit: 'group',

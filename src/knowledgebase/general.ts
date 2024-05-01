@@ -1,4 +1,4 @@
-import { useData, useEvaluate } from "../utils/schema"
+import { useData } from "../utils/schema"
 
 export interface General {
     travelPurpose: 'ConductBusiness' | 'AttendConvention' | 'SettleEState' | 'Contract' | 'Tourism' | 'Vacation' | 'Visit' | 'MedicalTreatment' | 'JoinSocialevent' | 'Participate' | 'ShortStudy' | 'Study' | 'Employment' | 'ProfessionalPerformance' | 'ArrivalCrewmember'
@@ -12,7 +12,6 @@ export interface General {
         success: number
     }
 }
-export const acceptsEvaluations = useEvaluate()
 export const general = useData({
     id: 'general',
     $formkit: 'group',

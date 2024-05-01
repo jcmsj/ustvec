@@ -16,13 +16,12 @@ export default defineConfig({
       resolvers: [
         IconsResolver({
           componentPrefix: '',
-          enabledCollections: ['mdi'],
+          enabledCollections: ['ic'],
         }),
       ]
     }),
     Icons({
       compiler: 'vue3',
-
     }),
     dsv(),
   ],

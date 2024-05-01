@@ -6,9 +6,7 @@
                 <FormKit type="select" name="type" :options="assetTypeSchema" label="Asset Type" validation="required">
                 </FormKit>
                 <FormKit type="number" name="valueDollars" label="Asset value ($)" validation="required" min="0" />
-                <button type="button" class="btn" @click="() => node.input(value.filter((_, i) => i !== index))">
-                    - Remove
-                </button>
+                <RemoveBtn @click="() => node.input(value.filter((_, i) => i !== index))" />
             </div>
         </FormKit>
         <button type="button" class="btn btn-secondary justify-self-center" @click="() => node.input(value.concat({}))">
@@ -20,6 +18,7 @@
 import { ref } from "vue";
 import { Asset } from "../inference";
 import { assetTypeSchema } from "../knowledgebase/ties";
+import RemoveBtn from "./RemoveBtn.vue";
 const assets = ref<Partial<Asset>[]>([{}])
 </script>
 <style scoped>

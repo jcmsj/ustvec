@@ -1,10 +1,9 @@
 <template>
     <div class="pb-8">
-        <FormKit type="form" form-class="flex flex-col gap-y-2 items-center" @submit="onSubmit" #default="{ value }">
+        <FormKit type="form" form-class="flex flex-col gap-y-2 items-center" @submit="onSubmit">
             <div class="text-xl divider divider-primary">Travel Itinerary</div>
             <FormKit type="list" name="plan" :value="plan" dynamic #default="{ items, node, value }">
-                <FormKit type="group" v-for="(item, index) in items" :key="item" :index="index"
-                    #default="{ value: row }">
+                <FormKit type="group" v-for="(item, index) in items" :key="item" :index="index">
                     <div class="group group-format">
                         <FormKit type="select" name="country_division" :options="USStates" label="US State "
                             validation="required" />
@@ -12,10 +11,7 @@
                             help="A popular landmark" />
                         <FormKit type="text" name="related_actions_tags" label="Related actions" validation="required"
                             help="comma separated actions." />
-                        <button type="button" class="btn"
-                            @click="() => node.input(value.filter((_, i) => i !== index))">
-                            - Remove
-                        </button>
+                        <RemoveBtn @click="() => node.input(value.filter((_, i) => i !== index))" />
                     </div>
                 </FormKit>
                 <button type="button" class="btn btn-secondary justify-self-center"
@@ -66,6 +62,7 @@
 import { computed, ref } from "vue";
 import { LocationInput, USStates, travelKnowledge, validateInput, ValidationOutput, InvalidState } from "../knowledgebase/travelplan.ts"
 import { FormKitGroupValue } from "@formkit/core";
+import RemoveBtn from "./RemoveBtn.vue";
 const plan = ref<Partial<LocationInput & FormKitGroupValue>[]>([{}])
 const validations = ref<ValidationOutput[]>([])
 type InvalidRecord = Record<InvalidState['reason'], ValidationOutput[]>

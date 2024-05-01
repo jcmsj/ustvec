@@ -1,8 +1,19 @@
 <template>
   <div class="p-2 flex flex-col items-center">
-    <div class="text-3xl">
-      US Tourist VISA Eligibility Checker
-    </div>
+    <nav class="navbar text-3xl bg-base-100">
+      <div class="flex-1 gap-x-4">
+        US Tourist VISA Eligibility Checker
+      </div>
+        <div class="flex-none gap-2">
+        <label class="swap swap-rotate">
+          <!-- https://daisyui.com/components/theme-controller/#theme-controller-using-a-swap -->
+          <!-- this hidden checkbox controls the state -->
+          <input type="checkbox" class="theme-controller" value="emerald" />
+          <ic-outline-wb-sunny class="swap-off w-10 h-10" />
+          <ic-outline-dark-mode class="swap-on w-10 h-10" />
+        </label>
+      </div>
+    </nav>
     <main class="flex flex-col items-center">
       <ul class="steps steps-vertical lg:steps-horizontal">
         <li class="step" :class="{ 'step-primary': state === 'general' }" @click="state = 'general'">General Eligibility
@@ -11,10 +22,10 @@
           home</li>
         <li class="step" :class="{ 'step-primary': state === 'travel' }" @click="state = 'travel'">Travel Itinerary</li>
       </ul>
-      <FormKit type="form" v-if="state == 'general'" @submit="onSubmit" :actions="false">
+      <FormKit type="form" v-if="state == 'general'" :actions="false">
         <FormKitSchema v-bind="general" />
       </FormKit>
-      <FormKit type="form" @submit="onSubmit" v-if="state == 'ties'" #default="{ value }" :actions="false">
+      <FormKit type="form"v-if="state == 'ties'" #default="{ value }" :actions="false">
         <div class="text-3xl divider divider-primary">Proving Ties</div>
         <FormKitSchema v-bind="strongTies">
         </FormKitSchema>
@@ -28,15 +39,15 @@
         </div>
         <TiesEvaluation :value />
       </FormKit>
-      <TravelPlanList  v-if="state=='travel'" />
+      <TravelPlanList v-if="state == 'travel'" />
       <div class="join">
-          <button @click="prev" class="join-item btn" :class="{'btn-disabled':!canPrev}">
-            Previous
-          </button>
-          <button @click="next" class="join-item btn" :class="{'btn-disabled':!canNext}">
-            Next
-          </button>
-        </div>
+        <button @click="prev" class="join-item btn" :class="{ 'btn-disabled': !canPrev }">
+          Previous
+        </button>
+        <button @click="next" class="join-item btn" :class="{ 'btn-disabled': !canNext }">
+          Next
+        </button>
+      </div>
     </main>
   </div>
 </template>
@@ -49,20 +60,8 @@ import OrganizationMembershipList from './components/OrganizationMembershipList.
 import { strongTies } from './knowledgebase/ties';
 import TiesEvaluation from "./components/TiesEvaluation.vue";
 import TravelPlanList from './components/TravelPlanList.vue';
-import { transformKb } from './knowledgebase/travelplan';
-
-function onSubmit(data) {
-  state.value = 'ties'
-}
 
 const state = ref<"general" | "ties" | "travel">("general")
-function push(key: string, v: any) {
-  console.log(key, v)
-}
-function onSubmitTravel(data) {
-  state.value = 'ties'
-}
-
 
 function next() {
   if (state.value === 'general') {
@@ -98,6 +97,4 @@ const canPrev = computed(() => {
     return true
   }
 })
-
-transformKb()
 </script>

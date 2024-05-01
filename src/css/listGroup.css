@@ -4,5 +4,5 @@
 }
 
 .group-format {
-    @apply w-max flex flex-col lg:flex-row lg:gap-x-4;
+    @apply w-max border-neutral flex flex-col lg:flex-row lg:gap-x-4;
 }
