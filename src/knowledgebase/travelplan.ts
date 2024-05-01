@@ -1,9 +1,87 @@
+import { ref } from "vue";
+import csv from "../../public/cases.csv"
+export const raw = csv;
+interface Entry {
+    country: "usa",
+    country_division: string
+    points_of_interest: string
+    related_actions_tags: string
+}
+export interface TravelKnowledge {
+    states: {
+        value: string
+        label: string
+        points: {
+            value: string
+            label: string
+            actions: {
+                value: string
+                label: string
+            }[];
+        }[];
+    }[]
+}
+export function transformKb(data:Entry[] = []): TravelKnowledge {
+    const knowledge: TravelKnowledge = {
+        states:[]
+    }
+    for (const row of data) {
+        let state = knowledge.states.find(state => state.value === row.country_division)
+        if (state) {
+            const point = state.points.find(point => point.value === row.points_of_interest)
+            if (point) {
+                point.actions.push({ value: row.related_actions_tags, label: row.related_actions_tags })
+            } else {
+                const actions = row.related_actions_tags.split(', ').map(action => ({ value: action, label: action }))
+                state.points.push({
+                    value: row.points_of_interest,
+                    label: row.points_of_interest,
+                    actions,
+                })
+            }
+        } else {
+            knowledge.states.push({
+                value: row.country_division,
+                label: row.country_division,
+                points: [{
+                    value: row.points_of_interest,
+                    label: row.points_of_interest,
+                    actions: row.related_actions_tags.split(', ').map(action => ({ value: action, label: action }))
+                }]
+            })
+        }
+    }
+    console.log(knowledge)
+    return knowledge
+}
+export const travelKnowledge = ref<TravelKnowledge>(transformKb(raw))
+
 export interface LocationInput {
     country_division: string
     point_of_interest: string
     related_actions_tags: string
 }
 
+export interface InvalidState {
+    state: "INVALID";
+    reason: "STATE" | "POINT" | "ACTION";
+}
+export type Validation = {
+    state: "VALID";
+} | InvalidState;
+export interface ValidationOutput {
+    validation: Validation
+    input: LocationInput
+}
+export function validateInput(input: LocationInput, kb:TravelKnowledge): Validation {
+    const state = kb.states.find(state => state.value === input.country_division)
+    if (!state) return { state: "INVALID", reason: "STATE" }
+    const point = state.points.find(point => point.value === input.point_of_interest)
+    if (!point) return { state: "INVALID", reason: "POINT" }
+    const action = point.actions.find(action => action.value === input.related_actions_tags)
+    if (!action) return { state: "INVALID", reason: "ACTION"}
+    return { state: "VALID"}
+}
 interface USState {
     value: string // lowercase name of the state
     label: string // formal name of the state
@@ -61,3 +139,4 @@ export const USStates: (USState & any)[] = [
     { value: "wisconsin", label: "Wisconsin" },
     { value: "wyoming", label: "Wyoming" }
 ]
+

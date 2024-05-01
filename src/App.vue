@@ -28,7 +28,7 @@
         </div>
         <TiesEvaluation :value />
       </FormKit>
-      <TravelForm v-if="state=='travel'" />
+      <TravelPlanList  v-if="state=='travel'" />
       <div class="join">
           <button @click="prev" class="join-item btn" :class="{'btn-disabled':!canPrev}">
             Previous
@@ -49,7 +49,7 @@ import OrganizationMembershipList from './components/OrganizationMembershipList.
 import { strongTies } from './knowledgebase/ties';
 import TiesEvaluation from "./components/TiesEvaluation.vue";
 import TravelPlanList from './components/TravelPlanList.vue';
-import TravelForm from './components/TravelForm.vue';
+import { transformKb } from './knowledgebase/travelplan';
 
 function onSubmit(data) {
   state.value = 'ties'
@@ -98,4 +98,6 @@ const canPrev = computed(() => {
     return true
   }
 })
+
+transformKb()
 </script>
