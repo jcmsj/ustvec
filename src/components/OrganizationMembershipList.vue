@@ -6,10 +6,10 @@
                 <FormKit type="date" name="memberSince" label="Member since" validation="required" />
                 <FormKit type="date" name="membershipExpiry" label="Membership expiry"
                     validation="required|afterInputDate:memberSince" />
-                <RemoveBtn @click="() => node.input(value.filter((_, i) => i !== index))" />
+                <RemoveBtn @click="() => node.input(value?.filter((_, i) => i !== index))" />
             </div>
         </FormKit>
-        <button type="button" class="btn btn-secondary justify-self-center" @click="() => node.input(value.concat({}))">
+        <button type="button" class="btn btn-secondary justify-self-center" @click="() => node.input(value?.concat({}))">
             + Add organization
         </button>
     </FormKit>

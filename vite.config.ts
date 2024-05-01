@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import dsv from '@rollup/plugin-dsv'
 // https://vitejs.dev/config/
 export default defineConfig({
+  assetsInclude: ['**/*.csv'],
   plugins: [
     vue({
       script: {

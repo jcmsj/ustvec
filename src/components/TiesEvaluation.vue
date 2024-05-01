@@ -25,7 +25,7 @@ import { evaluateApplicant } from "../inference";
 const { value } = defineProps<{
     value: any
 }>()
-const evaluations = computed(() => evaluateApplicant(value.general, value.ties, value.organizations, value.assets))
+const evaluations = computed(() => evaluateApplicant(value.ties, value.organizations, value.assets))
 
 const score = computed(() => {
     return Math.min(Math.max(0, evaluations.value.reduce((acc, curr) => acc + curr.score, 0)), 100)

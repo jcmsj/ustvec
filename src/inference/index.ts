@@ -1,5 +1,3 @@
-import { General } from "../knowledgebase/general";
-
 export interface Asset {
     name: string;
     valueDollars: string;
@@ -42,7 +40,6 @@ function validOrganization(o: Organization) {
  * - volunteer work: 5%
  */
 export function evaluateApplicant(
-    general: General,
     ties : ProveTies<'yes' | 'no'>, 
     organizations:Organization[] = [],
     assets: Asset[]

@@ -7,25 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ConditionComp: typeof import('./src/components/ConditionComp.vue')['default']
-    EvaluateGeneral: typeof import('./src/components/EvaluateGeneral.vue')['default']
-    Evaluation: typeof import('./src/components/Evaluation.vue')['default']
-    IcMoon: typeof import('~icons/ic/moon')['default']
     IcOutlineDarkMode: typeof import('~icons/ic/outline-dark-mode')['default']
     IcOutlineWbSunny: typeof import('~icons/ic/outline-wb-sunny')['default']
-    IcSun: typeof import('~icons/ic/sun')['default']
-    MiMoon: typeof import('~icons/mi/moon')['default']
-    MiSun: typeof import('~icons/mi/sun')['default']
     OrganizationMembershipList: typeof import('./src/components/OrganizationMembershipList.vue')['default']
-    PersonalAssetInput: typeof import('./src/components/PersonalAssetInput.vue')['default']
     PersonalAssetInputList: typeof import('./src/components/PersonalAssetInputList.vue')['default']
-    PlanEvaluation: typeof import('./src/components/PlanEvaluation.vue')['default']
-    ProvingTies: typeof import('./src/components/ProvingTies.vue')['default']
-    RecursiveSchemaComp: typeof import('./src/components/RecursiveSchemaComp.vue')['default']
     RemoveBtn: typeof import('./src/components/RemoveBtn.vue')['default']
     TiesEvaluation: typeof import('./src/components/TiesEvaluation.vue')['default']
-    Travel: typeof import('./src/components/Travel.vue')['default']
-    TravelForm: typeof import('./src/components/TravelForm.vue')['default']
     TravelPlanList: typeof import('./src/components/TravelPlanList.vue')['default']
     WhenGeneralEligible: typeof import('./src/components/WhenGeneralEligible.vue')['default']
   }

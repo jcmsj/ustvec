@@ -11,11 +11,11 @@
                             help="A popular landmark" />
                         <FormKit type="text" name="related_actions_tags" label="Related actions" validation="required"
                             help="comma separated actions." />
-                        <RemoveBtn @click="() => node.input(value.filter((_, i) => i !== index))" />
+                        <RemoveBtn @click="() => node.input(value?.filter((_, i) => i !== index))" />
                     </div>
                 </FormKit>
                 <button type="button" class="btn btn-secondary justify-self-center"
-                    @click="() => node.input(value.concat({}))">
+                    @click="() => node.input(value?.concat({}))">
                     + Add Location
                 </button>
             </FormKit>
