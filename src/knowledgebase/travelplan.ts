@@ -1,8 +1,4 @@
-import { ref } from "vue";
-//@ts-ignore
-import csv from "../../public/cases.csv";
-export const raw = csv;
-interface Entry {
+export interface CSVEntry {
     country: "usa",
     country_division: string
     points_of_interest: string
@@ -22,7 +18,7 @@ export interface TravelKnowledge {
         }[];
     }[]
 }
-export function transformKb(data:Entry[] = []): TravelKnowledge {
+export function transformKb(data:CSVEntry[] = []): TravelKnowledge {
     const knowledge: TravelKnowledge = {
         states:[]
     }
@@ -55,8 +51,6 @@ export function transformKb(data:Entry[] = []): TravelKnowledge {
     console.log(knowledge)
     return knowledge
 }
-export const travelKnowledge = ref<TravelKnowledge>(transformKb(raw))
-
 export interface LocationInput {
     country_division: string
     point_of_interest: string

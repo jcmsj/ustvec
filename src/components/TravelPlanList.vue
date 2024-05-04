@@ -1,6 +1,17 @@
 <template>
     <div class="pb-8">
-        <FormKit type="form" form-class="flex flex-col gap-y-2 items-center" @submit="onSubmit">
+        <div v-if="travelKnowledge.states.length == 0" class="card w-96 bg-base-100 shadow-xl">
+            <div class="card-body text-center text-error">
+                <p class="text-xl"> Knowledgebase is empty!</p>
+                <div class="card-actions justify-center">
+                    <button class="btn btn-secondary">
+                        Report to admin
+                    </button>
+                </div>
+            </div>
+        </div>
+        <FormKit v-if="travelKnowledge.states.length" type="form" form-class="flex flex-col gap-y-2 items-center"
+            @submit="onSubmit">
             <div class="text-xl divider divider-primary">Travel Itinerary</div>
             <FormKit type="list" name="plan" :value="plan" dynamic #default="{ items, node, value }">
                 <FormKit type="group" v-for="(item, index) in items" :key="item" :index="index">
@@ -60,9 +71,26 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { LocationInput, USStates, travelKnowledge, validateInput, ValidationOutput, InvalidState } from "../knowledgebase/travelplan.ts"
+import { LocationInput, USStates, transformKb, validateInput, ValidationOutput, InvalidState, CSVEntry } from "../knowledgebase/travelplan.ts"
 import { FormKitGroupValue } from "@formkit/core";
 import RemoveBtn from "./RemoveBtn.vue";
+import defaultCsvUrl from "/cases.csv?url"
+import { csvParse } from "d3-dsv"
+import { computedAsync } from "@vueuse/core"
+const csvUrl = ref(defaultCsvUrl)
+async function fetchCsv(url: string): Promise<CSVEntry[]> {
+    const response = await fetch(url)
+    return csvParse(await response.text()) as any
+}
+const travelKnowledge = computedAsync(
+    async () => fetchCsv(csvUrl.value).then(transformKb),
+    {
+        states: []
+    }, {
+    onError(e) {
+        console.error(e)
+    },
+})
 const plan = ref<Partial<LocationInput & FormKitGroupValue>[]>([{}])
 const validations = ref<ValidationOutput[]>([])
 type InvalidRecord = Record<InvalidState['reason'], ValidationOutput[]>

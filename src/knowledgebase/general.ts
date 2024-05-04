@@ -80,6 +80,19 @@ export const general = useData({
                         { label: 'aircraft', value: 'aircraft' },
                     ]
                 },
+                {
+                    when: "ShortStudy",
+                    $formkit: 'number',
+                    id: 'studyDuration',
+                    label: 'How many hours per week will the class be?',
+                    min:1,
+                    validation: 'required|numeric|max:18|min:1', //18hrs
+                    value:1,
+                    validationMessages: {
+                        max: 'The class must be less than 18 hours per week',
+                        min: "Hours must be at least 1 hour per week",
+                    }
+                }
             ]
         },
         {
@@ -103,10 +116,8 @@ export const general = useData({
                         { label: 'No', value: 'no', action: true },
                         { label: 'Yes', value: 'yes', action: false },
                     ],
-
                     nested: [
                         {
-
                             when: 'yes',
                             $formkit: 'select',
                             id: 'nearingPregnancy',
@@ -154,10 +165,27 @@ export const general = useData({
                     validationVisibility: 'live',
                     label: 'Passport expiration date',
                     validation:"required|afterInputDate:plannedEndDate,6",
+                    validationMessages: {
+                        afterInputDate: "Your passport must be valid for at least 6 months after your trip ends"
+                    }
                 }
-
             ]
         },
+        {
+            // where you deemed to be ineligible for US Citizenship before?
+            $formkit: 'select',
+            id: 'ineligible',
+            label: 'Have you ever been deemed ineligible for US Citizenship?',
+            options: [
+                { label: 'No', value: 'no' },
+                { label: 'Yes', value: 'yes' },
+            ],
+            validation: 'required|is:no',
+            validationVisibility: 'live',
+            validationMessages: {
+                is: 'You are not eligible for a VISA. In general: Any immigrant who is permanently ineligible to citizenship is inadmissible.'
+            },
+        }
         // {
         // $formkit: 'group',
         // id:"visaAttempts",
