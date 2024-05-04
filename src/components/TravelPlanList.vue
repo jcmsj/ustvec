@@ -71,26 +71,11 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { LocationInput, USStates, transformKb, validateInput, ValidationOutput, InvalidState, CSVEntry } from "../knowledgebase/travelplan.ts"
+import { LocationInput, USStates, validateInput, ValidationOutput, InvalidState, TravelKnowledge } from "../knowledgebase/travelplan.ts"
 import { FormKitGroupValue } from "@formkit/core";
 import RemoveBtn from "./RemoveBtn.vue";
-import defaultCsvUrl from "/cases.csv?url"
-import { csvParse } from "d3-dsv"
-import { computedAsync } from "@vueuse/core"
-const csvUrl = ref(defaultCsvUrl)
-async function fetchCsv(url: string): Promise<CSVEntry[]> {
-    const response = await fetch(url)
-    return csvParse(await response.text()) as any
-}
-const travelKnowledge = computedAsync(
-    async () => fetchCsv(csvUrl.value).then(transformKb),
-    {
-        states: []
-    }, {
-    onError(e) {
-        console.error(e)
-    },
-})
+
+const props = defineProps<{ travelKnowledge: TravelKnowledge}>()
 const plan = ref<Partial<LocationInput & FormKitGroupValue>[]>([{}])
 const validations = ref<ValidationOutput[]>([])
 type InvalidRecord = Record<InvalidState['reason'], ValidationOutput[]>
@@ -118,7 +103,7 @@ function onSubmit(data: { plan: LocationInput[] }) {
     validations.value = data.plan.map(input => {
         return {
             input,
-            validation: validateInput(input, travelKnowledge.value)
+            validation: validateInput(input, props.travelKnowledge)
         };
     })
 }

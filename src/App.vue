@@ -4,7 +4,7 @@
       <div class="flex-1 gap-x-4">
         US Tourist VISA Eligibility Checker
       </div>
-        <div class="flex-none gap-2">
+      <div class="flex-none gap-2">
         <label class="swap swap-rotate">
           <!-- https://daisyui.com/components/theme-controller/#theme-controller-using-a-swap -->
           <!-- this hidden checkbox controls the state -->
@@ -22,10 +22,10 @@
           home</li>
         <li class="step" :class="{ 'step-primary': state === 'travel' }" @click="state = 'travel'">Travel Itinerary</li>
       </ul>
-      <FormKit type="form" v-if="state == 'general'" :actions="false">
-        <FormKitSchema v-bind="general" />
+      <FormKit type="form" :form-class="{ 'hidden': hideGeneral }" :actions="false">
+        <FormKitSchema :schema="general.schema" :data="generalVal" />
       </FormKit>
-      <FormKit type="form"v-if="state == 'ties'" #default="{ value }" :actions="false">
+      <FormKit type="form" :form-class="{ 'hidden': hideTies }" #default="{ value }" :actions="false">
         <div class="text-3xl divider divider-primary">Proving Ties</div>
         <FormKitSchema v-bind="strongTies">
         </FormKitSchema>
@@ -39,7 +39,7 @@
         </div>
         <TiesEvaluation :value />
       </FormKit>
-      <TravelPlanList v-if="state == 'travel'" />
+      <TravelPlanList :travel-knowledge :class="{ 'hidden': hideTravel }" />
       <div class="join">
         <button @click="prev" class="join-item btn" :class="{ 'btn-disabled': !canPrev }">
           Previous
@@ -60,9 +60,15 @@ import OrganizationMembershipList from './components/OrganizationMembershipList.
 import { strongTies } from './knowledgebase/ties';
 import TiesEvaluation from "./components/TiesEvaluation.vue";
 import TravelPlanList from './components/TravelPlanList.vue';
-
+import defaultCsvUrl from "/cases.csv?url"
+import { csvParse } from "d3-dsv"
+import { computedAsync } from "@vueuse/core"
+import { CSVEntry, transformKb } from './knowledgebase/travelplan';
+const generalVal = ref()
 const state = ref<"general" | "ties" | "travel">("general")
-
+const hideTies = computed(() => state.value != 'ties')
+const hideTravel = computed(() => state.value != 'travel')
+const hideGeneral = computed(() => state.value != 'general')
 function next() {
   if (state.value === 'general') {
     state.value = 'ties'
@@ -96,5 +102,20 @@ const canPrev = computed(() => {
   } else {
     return true
   }
+})
+
+const csvUrl = ref(defaultCsvUrl)
+async function fetchCsv(url: string): Promise<CSVEntry[]> {
+  const response = await fetch(url)
+  return csvParse(await response.text()) as any
+}
+const travelKnowledge = computedAsync(
+  async () => fetchCsv(csvUrl.value).then(transformKb),
+  {
+    states: []
+  }, {
+  onError(e) {
+    console.error(e)
+  },
 })
 </script>
