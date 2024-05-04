@@ -101,29 +101,25 @@ export function evaluateApplicant(
         let score = 0
         const children = parseInt(ties.children)
         if (children >= 3) {
-            score = 15
+            score = 35
         } else if (children >= 1) {
-            score = 10
+            score = 15
         }
         evaluations.push({score, label:'children'})
     }
 
     if (ties.annualSalaryDollars) {
         const annualSalaryDollars = ties.annualSalaryDollars
-        const IDEAL = 20_000
-        let score = -15 // <= 10k
+        const IDEAL = 2_000
+        let score = 0 // < 2k
         if (annualSalaryDollars >= IDEAL) {
             score = lerpIdealScoreWithExcess({
                 value: annualSalaryDollars,
                 idealValue: IDEAL,
-                scaler: 3_000,
+                scaler: 120, // at this scale, 5K will give 25, thefore the score will be 50
                 idealScore: 25,
-                excessScore: 50
+                excessScore: 60
             })
-        } else if (annualSalaryDollars >= 15_000) {
-            score = 10
-        } else if (annualSalaryDollars >= 10_000) {
-            score = 0
         }
         evaluations.push({score, label:'annualSalaryDollars'})
     }
@@ -132,20 +128,10 @@ export function evaluateApplicant(
     return evaluations
 }
 
-/**
- * Linearly interpolate a score based on the excess of a value from an ideal value
- */
-// function lerpIdealScoreWithExcess({
-//     value,
-//     idealValue,
-//     scaler,
-//     idealScore,
-//     excessScore,
-// }: Record<string, number>) {
-//     const excess = (value - idealValue)/scaler
-//     return idealScore + Math.min(excessScore, excess)
-// }
 
+/**
+ * max score = idealScore + excessScore
+ */
 function lerpIdealScoreWithExcess({
     value,
     idealValue,

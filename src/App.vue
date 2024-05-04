@@ -5,6 +5,9 @@
         US Tourist VISA Eligibility Checker
       </div>
       <div class="flex-none gap-2">
+        <!-- purpose -->
+        <button class="btn" onclick="goal_modal.showModal()">Read Goal</button>
+        <button class="btn btn-warning" onclick="disclaimer_modal.showModal()">Read Disclaimer</button>
         <label class="swap swap-rotate">
           <!-- https://daisyui.com/components/theme-controller/#theme-controller-using-a-swap -->
           <!-- this hidden checkbox controls the state -->
@@ -14,6 +17,47 @@
         </label>
       </div>
     </nav>
+   
+    <!-- Disclaimer -->
+    <dialog id="disclaimer_modal" class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold text-warning">Disclaimer!</h3>
+        <p class="py-4 text-justify">
+          This is a prototype application. It overly simplifies the process of evaluation. Therefore, the information
+          provided here is insufficient to be considered as legal advice. Please consult with a legal professional for
+          your specific case.
+        </p>
+        <modal-tip />
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
+    <!-- Read goal -->
+    <!-- Open the modal using ID.showModal() method -->
+    <dialog id="goal_modal" class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold text-primary">Goals</h3>
+        <ol class="list-decimal p-4 space-y-2">
+          <li class="list-item">
+            Help you understand the general eligibility requirements for a US Visitor Visa, specifically the Tourism
+            variant, also called <span class="text-primary">B-2 Visa</span>.
+          </li>
+          <li class="list-item">
+            Guide you through the process of evaluating your ties to your home country and your travel itinerary.
+          </li>
+          <li class="list-item">
+            Provide you with a certain idea of your eligibility before filling a <span class="text-bold">PAID</span> and
+            <span class="text-bold">UNREFUNDABLE</span> application
+            as well as tackling an actual interview with an immigration officer.
+          </li>
+        </ol>
+        <modal-tip />
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
     <main class="flex flex-col items-center">
       <ul class="steps steps-vertical lg:steps-horizontal">
         <li class="step" :class="{ 'step-primary': state === 'general' }" @click="state = 'general'">General Eligibility
@@ -23,6 +67,7 @@
         <li class="step" :class="{ 'step-primary': state === 'travel' }" @click="state = 'travel'">Travel Itinerary</li>
       </ul>
       <FormKit type="form" :form-class="{ 'hidden': hideGeneral }" :actions="false">
+        <div class="text-3xl divider divider-primary">General</div>
         <FormKitSchema :schema="general.schema" :data="generalVal" />
       </FormKit>
       <FormKit type="form" :form-class="{ 'hidden': hideTies }" #default="{ value }" :actions="false">
@@ -64,6 +109,7 @@ import defaultCsvUrl from "/cases.csv?url"
 import { csvParse } from "d3-dsv"
 import { computedAsync } from "@vueuse/core"
 import { CSVEntry, transformKb } from './knowledgebase/travelplan';
+import ModalTip from "./components/ModalTip.vue"
 const generalVal = ref()
 const state = ref<"general" | "ties" | "travel">("general")
 const hideTies = computed(() => state.value != 'ties')

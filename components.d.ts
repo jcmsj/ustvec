@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     IcOutlineDarkMode: typeof import('~icons/ic/outline-dark-mode')['default']
     IcOutlineWbSunny: typeof import('~icons/ic/outline-wb-sunny')['default']
+    ModalTip: typeof import('./src/components/ModalTip.vue')['default']
     OrganizationMembershipList: typeof import('./src/components/OrganizationMembershipList.vue')['default']
     PersonalAssetInputList: typeof import('./src/components/PersonalAssetInputList.vue')['default']
     RemoveBtn: typeof import('./src/components/RemoveBtn.vue')['default']
