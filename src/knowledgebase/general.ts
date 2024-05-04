@@ -153,10 +153,21 @@ export const general = useData({
                 {
                     when: 'yes',
                     $formkit: 'date',
-                    id: 'plannedEndDate',
-                    label: 'What date will your trip end?',
+                    id: 'plannedStartDate',
+                    label: 'What date will your trip start?',
                     validation: `required|date_after:${new Date()}`,
                     validationVisibility: 'live',
+                },
+                {
+                    when: 'yes',
+                    $formkit: 'date',
+                    id: 'plannedEndDate',
+                    label: 'What date will your trip end?',
+                    validation: `required|afterInputDate:plannedStartDate,0,0`,
+                    validationVisibility: 'live',
+                    validationMessages: {
+                        afterInputDate: "Your trip must end after it starts"
+                    }
                 },
                 {
                     when: 'yes',
@@ -164,7 +175,7 @@ export const general = useData({
                     id: 'passportExpiration',
                     validationVisibility: 'live',
                     label: 'Passport expiration date',
-                    validation:"required|afterInputDate:plannedEndDate,6",
+                    validation:"required|afterInputDate:plannedEndDate,0,6",
                     validationMessages: {
                         afterInputDate: "Your passport must be valid for at least 6 months after your trip ends"
                     }
