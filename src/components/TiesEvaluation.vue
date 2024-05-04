@@ -8,7 +8,8 @@
             </div>
             <div class="stat-title">tie to your home country.</div>
             <div class="stat-title ">
-                <progress :class="progressType" class=" progress h-4 w-max self-center text-2xl" :value=score :max="100">
+                <progress :class="progressType" class=" progress h-4 w-max self-center text-2xl" :value=score
+                    :max="100">
                 </progress>
             </div>
             <div class="stat-title">You scored</div>
@@ -33,23 +34,29 @@ const score = computed(() => {
 // round to 2 decimal places
 const roundedScore = computed(() => Math.round(score.value * 100) / 100)
 
+// Category weights are inclusive and span until the next category
+// e.g. 'Weak' is from 15 to 35
+// Note the order of the categories is important
+const RED_THRESHOLD = 50
+const YELLOW_THRESHOLD = 75
+const CategoryWeights = new Map([
+    ['Very weak', 15],
+    ['Weak', 35],
+    ['Acceptable', RED_THRESHOLD],
+    ['Strong', YELLOW_THRESHOLD],
+    ['Very strong', 100]
+])
 const category = computed(() => {
-    if (score.value <= 0) {
-        return 'Very weak'
-    } else if (score.value <= 25) {
-        return 'Weak'
-    } else if (score.value <= 50) {
-        return 'Acceptable'
-    } else if (score.value <= 75) {
-        return 'Strong'
-    } else {
-        return 'Very strong'
+    for (const [key, value] of CategoryWeights) {
+        if (score.value <= value) {
+            return key
+        }
     }
 })
 const progressType = computed(() => {
-    if (score.value < 50) {
+    if (score.value <= RED_THRESHOLD) {
         return 'progress-error'
-    } else if (score.value < 75) {
+    } else if (score.value <= YELLOW_THRESHOLD) {
         return 'progress-warning'
     } else {
         return 'progress-success'
@@ -57,9 +64,9 @@ const progressType = computed(() => {
 })
 
 const statType = computed(() => {
-    if (score.value < 50) {
+    if (score.value <= RED_THRESHOLD) {
         return 'text-error'
-    } else if (score.value < 75) {
+    } else if (score.value <= YELLOW_THRESHOLD) {
         return 'text-warning'
     } else {
         return 'text-success'
