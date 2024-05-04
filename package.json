@@ -8,7 +8,7 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "cloud-deploy": "pnpm build && wrangler pages deploy ./dist --project-name ustvec"
+    "cloud-deploy": "pnpm build && wrangler pages deploy ./dist --project-name ustvec --branch main"
   },
   "dependencies": {
     "@formkit/core": "^1.6.2",
