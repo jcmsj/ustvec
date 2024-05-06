@@ -60,9 +60,9 @@ export const strongTies = useData({
     nested: [
         {
             $formkit: 'number',
-            id: 'annualSalaryDollars',
-            name: 'annualSalaryDollars',
-            label: 'Annual Salary($)',
+            id: 'monthlySalaryDollars',
+            name: 'monthlySalaryDollars',
+            label: 'Montly Salary($)',
             validation: 'required',
             validationVisibility: 'live',
             value:0,
@@ -98,6 +98,18 @@ export const strongTies = useData({
                 { label: 'No', value: 'no' },
                 { label: 'Yes', value: 'yes' },
             ],
+        },
+        // how many countries have you visited:
+        {
+            $formkit: 'number',
+            id: 'countriesVisited',
+            name: 'countriesVisited',
+            label: 'How many countries have you visited?',
+            help: 'Note: Excluding your home country',
+            value: 0,
+            min:0,
+            validation: 'required',
+            validationVisibility: 'live',
         },
     ]
 })

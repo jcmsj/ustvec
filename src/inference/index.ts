@@ -1,7 +1,7 @@
 export interface Asset {
     name: string;
     valueDollars: string;
-    type: 'property' |'real estate' | 'cars' |'motorbicycles' | 'savings' | 'business' | 'jewelry' | 'collectibles' | 'life insurance' | 'other' 
+    type: 'property' | 'real estate' | 'cars' | 'motorbicycles' | 'savings' | 'business' | 'jewelry' | 'collectibles' | 'life insurance' | 'other'
 }
 interface Organization {
     name: string
@@ -9,13 +9,14 @@ interface Organization {
     membershipExpiry: Date
 }
 export interface ProveTies<B> {
-    annualSalaryDollars: number
+    monthlySalaryDollars: number
     married: B
     children: number
     assets: Asset[]
     schoolEnrollment: B
     volunteerWork: string[]
     organizations: Organization[]
+    countriesVisited: number
 }
 
 function validOrganization(o: Organization) {
@@ -40,8 +41,8 @@ function validOrganization(o: Organization) {
  * - volunteer work: 5%
  */
 export function evaluateApplicant(
-    ties : ProveTies<'yes' | 'no'>, 
-    organizations:Organization[] = [],
+    ties: ProveTies<'yes' | 'no'>,
+    organizations: Organization[] = [],
     assets: Asset[]
 ) {
     // Define tresholds:
@@ -51,7 +52,7 @@ export function evaluateApplicant(
     // Fair eligibility: 50
     // Poor eligibility: 30
     // Ineligible: 0
-    const evaluations:{score:number, label:string}[] = []
+    const evaluations: { score: number, label: string }[] = []
     if (ties === undefined) {
         return evaluations
     }
@@ -62,11 +63,11 @@ export function evaluateApplicant(
     // 7-10 = 10%
     const _orgs = organizations.filter(validOrganization)
     if (_orgs.length >= 7) {
-        evaluations.push({score:10, label:'organizations'})
+        evaluations.push({ score: 10, label: 'organizations' })
     } else if (_orgs.length >= 4) {
-        evaluations.push({score:7, label:'organizations'})
+        evaluations.push({ score: 7, label: 'organizations' })
     } else if (_orgs.length >= 1) {
-        evaluations.push({score:5, label:'organizations'})
+        evaluations.push({ score: 5, label: 'organizations' })
     }
 
     // volunteer work: ideal: 5%
@@ -89,13 +90,13 @@ export function evaluateApplicant(
         } else {
             score = 0
         }
-        evaluations.push({score, label:'volunteerWork'})
+        evaluations.push({ score, label: 'volunteerWork' })
     }
     // enrolled
-    evaluations.push({score:ties.schoolEnrollment == 'yes' ? 5 : 0, label:'schoolEnrollment'})
+    evaluations.push({ score: ties.schoolEnrollment == 'yes' ? 15 : 0, label: 'schoolEnrollment' })
 
     // married: 10%
-    evaluations.push({score:ties.married == 'yes' ? 15 : 0, label:'married'})
+    evaluations.push({ score: ties.married == 'yes' ? 15 : 0, label: 'married' })
 
     if (typeof ties.children == 'string') {
         let score = 0
@@ -105,29 +106,43 @@ export function evaluateApplicant(
         } else if (children >= 1) {
             score = 15
         }
-        evaluations.push({score, label:'children'})
+        evaluations.push({ score, label: 'children' })
     }
 
-    if (ties.annualSalaryDollars) {
-        const annualSalaryDollars = ties.annualSalaryDollars
+    if (ties.monthlySalaryDollars) {
         const IDEAL = 2_000
         let score = 0 // < 2k
-        if (annualSalaryDollars >= IDEAL) {
+        if (ties.monthlySalaryDollars >= IDEAL) {
             score = lerpIdealScoreWithExcess({
-                value: annualSalaryDollars,
+                value: ties.monthlySalaryDollars,
                 idealValue: IDEAL,
                 scaler: 120, // at this scale, 5K will give 25, thefore the score will be 50
                 idealScore: 25,
                 excessScore: 60
             })
         }
-        evaluations.push({score, label:'annualSalaryDollars'})
+        evaluations.push({ score, label: 'monthlySalaryDollars' })
     }
-    evaluations.push({score:evalAssets(assets), 'label':'assets'})
+    evaluations.push({ score: evalAssets(assets), 'label': 'assets' })
+
+    // Travel history
+    if (ties.countriesVisited) {
+        const IDEAL = 1
+        let score = 0
+        if (ties.countriesVisited >= IDEAL) {
+            score = lerpIdealScoreWithExcess({
+                value: ties.countriesVisited,
+                idealValue: IDEAL,
+                scaler: 0.0005,
+                idealScore: 15,
+                excessScore: 45
+            })
+        }
+        evaluations.push({ score, label: 'travelledCountries' })
+    }
 
     return evaluations
 }
-
 
 /**
  * max score = idealScore + excessScore
@@ -151,7 +166,7 @@ function lerp(a: number, b: number, t: number) {
  * threshold of of 20k, return 25, for every excess 5k, add 1%, up to extra 50%
  * max score: 75
  */
-function evalAssets(assets:Asset[]) {
+function evalAssets(assets: Asset[]) {
     const totalAssets = assets
         .map(a => parseInt(a.valueDollars) || 0)
         .reduce((sum, n) => sum + n, 0)
