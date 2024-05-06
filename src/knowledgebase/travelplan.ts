@@ -69,11 +69,11 @@ export interface ValidationOutput {
     input: LocationInput
 }
 export function validateInput(input: LocationInput, kb:TravelKnowledge): Validation {
-    const state = kb.states.find(state => state.value === input.country_division)
+    const state = kb.states.find(state => state.value == input.country_division.toLowerCase())
     if (!state) return { state: "INVALID", reason: "STATE" }
-    const point = state.points.find(point => point.value === input.point_of_interest)
+    const point = state.points.find(point => point.value == input.point_of_interest.toLowerCase())
     if (!point) return { state: "INVALID", reason: "POINT" }
-    const action = point.actions.find(action => action.value === input.related_actions_tags)
+    const action = point.actions.find(action => action.value == input.related_actions_tags.toLowerCase())
     if (!action) return { state: "INVALID", reason: "ACTION"}
     return { state: "VALID"}
 }
