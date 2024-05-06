@@ -146,6 +146,7 @@ export function evaluateApplicant(
 
 /**
  * max score = idealScore + excessScore
+ * scaler works by dividing the excess by the scaler, for every time the scaler is reached, the score increases by 1, up to the excessScore
  */
 function lerpIdealScoreWithExcess({
     value,
@@ -170,7 +171,7 @@ function evalAssets(assets: Asset[]) {
     const totalAssets = assets
         .map(a => parseInt(a.valueDollars) || 0)
         .reduce((sum, n) => sum + n, 0)
-    const IDEAL = 30_000 // USD
+    const IDEAL = 5_000 // USD
     if (totalAssets < IDEAL) {
         return 0
     }
@@ -178,7 +179,7 @@ function evalAssets(assets: Asset[]) {
     return lerpIdealScoreWithExcess({
         value: totalAssets,
         idealValue: IDEAL,
-        scaler: 5_000,
+        scaler: 1_000,
         idealScore: 25,
         excessScore: 50
     })
