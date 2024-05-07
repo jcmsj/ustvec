@@ -23,9 +23,7 @@
       <div class="modal-box">
         <h3 class="text-lg font-bold text-warning">Disclaimer!</h3>
         <p class="py-4 text-justify">
-          This is a prototype application. It overly simplifies the process of evaluation. Therefore, the information
-          provided here is insufficient to be considered as legal advice. Please consult with a legal professional for
-          your specific case.
+          This is a prototype application. The use of this site or app does not in anyway establishes a lawyer-client relationship. Any information gathered as result of using this app does not constitute a legal advice. Please consult a legal professional.
         </p>
         <modal-tip />
       </div>
