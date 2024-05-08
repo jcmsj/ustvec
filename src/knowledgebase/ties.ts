@@ -62,7 +62,7 @@ export const strongTies = useData({
             $formkit: 'number',
             id: 'monthlySalaryDollars',
             name: 'monthlySalaryDollars',
-            label: 'Montly Salary($)',
+            label: 'Monthly Salary($)',
             validation: 'required',
             validationVisibility: 'live',
             value:0,
